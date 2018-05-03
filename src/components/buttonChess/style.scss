@@ -1,0 +1,13 @@
+.button-chess {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #ddd;
+    display: block;
+    float: left;
+    background: white;
+    cursor: pointer;
+    line-height: 10px;
+    &:hover {
+        background: #eee;
+    }
+}
