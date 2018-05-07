@@ -1,46 +1,115 @@
 export default class ChessLogicHelper {
     checkWin = (id, list) => {
-        return this.checkWinRow(id, list);
+        let position = this.getIndexOfItem(id, list);
+        let checkRow = this.checkWinRow(id, list, position);
+        let checkCol = this.checkWinCol(id, list, position);
+        let checkLeft = this.checkWinCrossLeft(id, list, position);
+        let checkRight = this.checkWinCrossRight(id, list, position);
+        if (checkRow.result) {
+            return checkRow;
+        } else if (checkCol.result) {
+            return checkCol;
+        } else if (checkLeft.result) {
+            return checkLeft;
+        } else if (checkRight.result) {
+            return checkRight;
+        } else {
+            return {result: false};
+        }
     }
 
-    checkWinRow = (id, list) => {
+    checkWinRow = (id, list, position) => {
+        let data = list[position.i];
+        return this.checkWinList(data);
+    }
+
+    checkWinCol = (id, list, position) => {
+        let x = position.i;
+        let y = position.j;
+        let data = [];
         for (let i = 0; i < list.length; i++) {
             for (let j = 0; j < list[i].length; j++) {
-                if (list[i][j].key == id) {
-                    let start = j - 4 < 0 ? 0 : j - 4;
-                    let end = j + 4 >= list[i].length ? list[i].length - 1 : j + 4;
-                    for (let k = start; k < end - 5; k++) {
-                        let value = list[i][k].value;
-                        let listRow = [];
-                        for (let m = k; m < k + 5; m++) {
-                            if (list[i][m].value && list[i][m].value != value) {
-                                return { result: false };
-                            } else {
-                                listRow.push([i, m]);
-                            }
-                        }
+                if (j == y) {
+                    data.push(list[i][j]);
+                }
+            }
+        }
 
-                        return {
-                            result: true,
-                            listRow: listRow
-                        };
+        return this.checkWinList(data);
+    }
+
+    checkWinCrossLeft = (id, list, position) => {
+        let x = position.i;
+        let y = position.j;
+        let data = [];
+        for (let i = 0; i < list.length; i++) {
+            for (let j = 0; j < list[i].length; j++) {
+                if (j - i == y - x) {
+                    try {
+                        data.push(list[i][j]);
+                    } catch (e) {
+                        console.log(e);
                     }
                 }
             }
         }
 
-        return { result: false };
+        return this.checkWinList(data);
     }
 
-    checkWinCol = (id, list) => {
+    checkWinCrossRight = (id, list, position) => {
+        let x = position.i;
+        let y = position.j;
+        let data = [];
+        for (let i = 0; i < list.length; i++) {
+            for (let j = 0; j < list[i].length; j++) {
+                if (j + i == x + y) {
+                    try {
+                        data.push(list[i][j]);
+                    } catch (e) {
+                        console.log(e);
+                    }
+                }
+            }
+        }
 
+        return this.checkWinList(data);
     }
 
-    checkWinCrossLeft = (id, list) => {
+    checkWinList = (list) => {
+        if (list.length > 5) {
+            for (let i = 0; i < list.length - 5; i++) {
+                let listRow = [];
+                let value = list[i].value;
+                for (let j = i; j < i + 5; j++) {
+                    if (list[j].value && list[j].value == value) {
+                        listRow.push(list[j]);
+                    }
+                }
 
+                if (listRow.length == 5) {
+                    return {
+                        result: true,
+                        listRow: listRow
+                    }
+                }
+            }
+
+            return { result: false };
+        } else {
+            return {result: false};
+        }
     }
 
-    checkWinCrossRight = (id, list) => {
-        
+    getIndexOfItem = (id, list) => {
+        for (let i = 0; i < list.length; i++) {
+            for (let j = 0; j < list[i].length; j++) {
+                if (id == list[i][j].key) {
+                    return {i: i, j: j};
+                }
+            }
+        }
+
+        return { i: 0, j: 0};
     }
 }
