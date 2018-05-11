@@ -6,10 +6,11 @@ import logo from './logo.svg';
 import './App.css';
 
 import Home from './containers/home';
+import ListRoom from './containers/listRoom';
+import Chess from './containers/chess';
 
 import ButtonChess from './components/buttonChess';
 import ChessLogicHelper from './helpers/chessLogic';
-import ListRoom from './components/listRoom';
 
 class App extends Component {
 
@@ -52,7 +53,6 @@ class App extends Component {
     }
 
     createRoom = () => {
-        console.log('tset');
         this.socket.emit('createRoom', null);
     }
 
@@ -72,10 +72,18 @@ class App extends Component {
             <div className="App">
                 <Router>
                     <Switch>
-                        <Route 
-                            exact 
+                        <Route
+                            exact
                             path='/'
                             render={(props) => <Home {...props} socket={socket} />} />
+                        <Route 
+                            exact 
+                            path='/list-room'
+                            render={(props) => <ListRoom {...props} socket={socket} />} />
+                        <Route
+                            exact
+                            path='/chess/:roomId'
+                            render={(props) => <Chess {...props} socket={socket} />} />
                     </Switch>
                 </Router>
             </div>

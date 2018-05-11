@@ -1,7 +1,18 @@
-.home-page .list-title {
-  background: #337ab7;
-  color: white;
-  font-size: 16px; }
-
-.home-page .sidebar-left {
-  padding-top: 10px; }
+.home-page {
+  padding-top: 20px; }
+  .home-page .logo {
+    width: 200px;
+    height: 200px; }
+  .home-page .content {
+    width: 450px;
+    display: flex;
+    flex-direction: row;
+    background: white;
+    height: 200px; }
+  .home-page .main-content {
+    text-align: left;
+    flex-grow: 1;
+    padding-top: 20px;
+    padding-left: 50px; }
+    .home-page .main-content a {
+      margin-bottom: 10px; }
